@@ -1,17 +1,22 @@
 package config
 
 import (
-	"fmt"
+	"log"
 	"os"
 
 	"github.com/joho/godotenv"
 )
 
-// LoadConfig -> Load a config value from the given config key
-func LoadConfig(key string) string {
+// LoadConfig -> Load a config into the os context
+func LoadConfig() {
 	err := godotenv.Load(".env")
 	if err != nil {
-		fmt.Print("Failed loading env file")
+		log.Fatal("Failed to load the .env file")
 	}
+}
+
+
+// Get the Env value [extracts from the os]
+func GetEnvironmentValue(key string)string{
 	return os.Getenv(key)
 }
