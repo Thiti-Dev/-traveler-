@@ -5,10 +5,21 @@ option go_package="./;pb";
 
 
 message User {
+    int64 id = 1;
+    string username = 2;
+    string password = 3;
+}
+
+message CreateUserRequest{
     string username = 1;
     string password = 2;
 }
 
+message CreateUserResponse{
+    User user = 1;
+}
+
+
 service UserService{
-    
+    rpc CreateUser (CreateUserRequest) returns (CreateUserResponse){}
 }
