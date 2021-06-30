@@ -4,9 +4,11 @@ import (
 	"log"
 	"net"
 
+	"github.com/Thiti-Dev/traveller/database"
 	"github.com/Thiti-Dev/traveller/pb"
 	"github.com/Thiti-Dev/traveller/service"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 func runGRPCServer(
@@ -14,6 +16,8 @@ func runGRPCServer(
 	listener net.Listener,
 )error{
 	grpcServer := grpc.NewServer()
+	pb.RegisterUserServiceServer(grpcServer,userService)
+	reflection.Register(grpcServer) // register the reflection
 	log.Printf("Starting GRPC server at %s", listener.Addr().String())
 	return grpcServer.Serve(listener)
 }
@@ -25,6 +29,11 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to listen: %v" , err)
 	}
+
+	// ENSURING
+	database.CreatePostgresConnection()
+	// ────────────────────────────────────────────────────────────────────────────────
+
 
 	userService := service.NewUserServer()
 	runGRPCServer(userService,listener)
