@@ -4,6 +4,7 @@ import (
 	"log"
 	"net"
 
+	"github.com/Thiti-Dev/traveller/config"
 	"github.com/Thiti-Dev/traveller/database"
 	"github.com/Thiti-Dev/traveller/pb"
 	"github.com/Thiti-Dev/traveller/service"
@@ -31,6 +32,7 @@ func main() {
 	}
 
 	// ENSURING
+	config.LoadConfig() // load the env config
 	database.CreatePostgresConnection()
 	// ────────────────────────────────────────────────────────────────────────────────
 
