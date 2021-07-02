@@ -1,6 +1,7 @@
 package pkg_jwt
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/Thiti-Dev/traveller/config"
@@ -26,4 +27,24 @@ func GetSignedTokenFromData(data models.RequiredDataToClaims) (string, error){
 		return "", err
 	}
 	return signedToken, nil
+}
+
+func Verify(accessToken string) (*models.CustomClaims, error){
+	token,err := jwt.ParseWithClaims(accessToken,&models.CustomClaims{},func(token *jwt.Token)(interface{},error){
+		_,ok := token.Method.(*jwt.SigningMethodHMAC) //TODO learn more on here
+		if !ok {
+			return nil,fmt.Errorf("Unexpeted token signing method")
+		}
+		return []byte(config.GetEnvironmentValue("JWT_SECRET")), nil
+	})
+
+	if err != nil{
+		return nil,fmt.Errorf("Invalid Token:%w",err)
+	}
+
+	claims, ok := token.Claims.(*models.CustomClaims)
+	if !ok {
+		return nil,fmt.Errorf("Invalid token claims")
+	}
+	return claims, nil
 }
