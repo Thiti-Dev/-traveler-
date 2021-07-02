@@ -19,7 +19,17 @@ message CreateUserResponse{
     User user = 1;
 }
 
+message LoginUserRequest{
+    string username = 1;
+    string password = 2;
+}
+
+message LoginUserResponse{
+    string access_token = 1;
+}
+
 
 service UserService{
     rpc CreateUser (CreateUserRequest) returns (CreateUserResponse){}
+    rpc LoginUser (LoginUserRequest) returns (LoginUserResponse){}
 }
