@@ -7,14 +7,16 @@ import (
 
 	"github.com/Thiti-Dev/traveller/database"
 	"github.com/Thiti-Dev/traveller/database/models"
+	models_ext "github.com/Thiti-Dev/traveller/models"
 	"github.com/Thiti-Dev/traveller/packages/pkg_bcrypt"
+	"github.com/Thiti-Dev/traveller/packages/pkg_jwt"
 	"github.com/Thiti-Dev/traveller/pb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 type UserServer struct{
-	pb.UnimplementedUserServiceServer
+	//pb.UnimplementedUserServiceServer // Un comment this if you want to ignore the unimplemented error
 }
 
 func NewUserServer() *UserServer {
@@ -67,4 +69,37 @@ func (server *UserServer) CreateUser(ctx context.Context, req *pb.CreateUserRequ
 	}
 
 	return response,nil
+}
+
+func (server *UserServer) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (*pb.LoginUserResponse, error){
+	username := req.GetUsername()
+	password := req.GetPassword()
+
+	dbInstance := database.GetEstablishedPostgresConnection()
+	user := new(models.User)
+	err := dbInstance.Model(user).Where("username = ?",username).Limit(1).Select()
+	if err != nil{
+		// err means not found in go-pg
+		//return nil, status.Errorf(codes.Internal, "cannot find user: %v", err)
+		return nil, status.Errorf(codes.NotFound, "incorrect username/password")
+	}
+
+	if (*user == models.User{} || !pkg_bcrypt.CheckPasswordHash(password,user.Password)){
+		return nil, status.Errorf(codes.NotFound, "incorrect username/password")
+	}
+
+	token, err := pkg_jwt.GetSignedTokenFromData(models_ext.RequiredDataToClaims{
+		Username: user.Username,
+		ID: user.Id,
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "cannot generate access token")
+	}
+
+	res := &pb.LoginUserResponse{
+		AccessToken: token,
+	}
+
+	return res,nil
+
 }
