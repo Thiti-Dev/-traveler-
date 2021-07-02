@@ -27,6 +27,7 @@ func streamInterceptor(srv interface{},stream grpc.ServerStream,info *grpc.Strea
 
 func runGRPCServer(
 	userService pb.UserServiceServer,
+	authService pb.AuthServiceServer,
 	listener net.Listener,
 )error{
 	grpcServer := grpc.NewServer(
@@ -35,6 +36,7 @@ func runGRPCServer(
 	)
 
 	pb.RegisterUserServiceServer(grpcServer,userService)
+	pb.RegisterAuthServiceServer(grpcServer,authService)
 	reflection.Register(grpcServer) // register the reflection
 	log.Printf("Starting GRPC server at %s", listener.Addr().String())
 	return grpcServer.Serve(listener)
@@ -55,5 +57,6 @@ func main() {
 
 
 	userService := service.NewUserServer()
-	runGRPCServer(userService,listener)
+	authService := service.NewAuthServer()
+	runGRPCServer(userService,authService,listener)
 }
