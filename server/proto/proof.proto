@@ -1,0 +1,21 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+package traveller;
+
+option go_package="./;pb";
+
+message ProofThread{
+    int64 creator_id=1;
+    string secret_code=2;
+    google.protobuf.Timestamp created_at=3;
+    google.protobuf.Timestamp reveal_at=4;
+    bool is_solved=5;
+    int64 solver_id=6;
+    string solver_aka=7;
+    google.protobuf.Timestamp solved_at=8;
+}
+
+
+service ProofService{
+    
+}
