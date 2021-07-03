@@ -22,6 +22,7 @@ func accessibleRoles() map[string][]string{
 func runGRPCServer(
 	userService pb.UserServiceServer,
 	authService pb.AuthServiceServer,
+	proofService pb.ProofServiceServer,
 	listener net.Listener,
 )error{
 	authInterceptor := service.NewAuthInterceptor(config.GetEnvironmentValue("JWT_SECRET"),accessibleRoles())
@@ -53,5 +54,6 @@ func main() {
 
 	userService := service.NewUserServer()
 	authService := service.NewAuthServer()
-	runGRPCServer(userService,authService,listener)
+	proofService := service.NewProofServer()
+	runGRPCServer(userService,authService,proofService,listener)
 }
