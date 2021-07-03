@@ -1,4 +1,5 @@
 syntax = "proto3";
+import "google/protobuf/empty.proto";
 package traveller;
 
 option go_package="./;pb";
@@ -19,6 +20,16 @@ message CreateUserResponse{
     User user = 1;
 }
 
+message UserDetail {
+    int64 id = 1;
+    string username = 2;
+}
+
+message GetAllUserResponse{
+    repeated UserDetail users = 1;
+}
+
 service UserService{
     rpc CreateUser (CreateUserRequest) returns (CreateUserResponse){}
+    rpc GetAllUser (google.protobuf.Empty) returns (GetAllUserResponse){}
 }

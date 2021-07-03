@@ -10,7 +10,9 @@ import (
 	"github.com/Thiti-Dev/traveller/packages/pkg_bcrypt"
 	"github.com/Thiti-Dev/traveller/pb"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type UserServer struct{
@@ -67,4 +69,39 @@ func (server *UserServer) CreateUser(ctx context.Context, req *pb.CreateUserRequ
 	}
 
 	return response,nil
+}
+
+func (server *UserServer) GetAllUser(ctx context.Context, req *emptypb.Empty) (*pb.GetAllUserResponse, error){
+
+	// ─── PASSED IN HEADER LOGGING ───────────────────────────────────────────────────
+	md,ok := metadata.FromIncomingContext(ctx)
+	if ok {
+		//fmt.Printf("%v",md)
+		userId := md["user-id"][0]
+		fmt.Printf("UserID:%v\n",userId)
+	}
+	// ────────────────────────────────────────────────────────────────────────────────
+
+
+	dbInstance := database.GetEstablishedPostgresConnection()
+
+	var users []db_model.User
+	err := dbInstance.Model(&users).Select()
+	if err !=nil{
+		log.Fatalf("problem fetching all user:%v",err)
+	}
+
+	var usersDetail []*pb.UserDetail
+	for _,user := range users{
+		usersDetail = append(usersDetail, 
+			&pb.UserDetail{
+				Id: user.Id,
+				Username: user.Username,
+			},
+		)
+	}
+
+	return &pb.GetAllUserResponse{
+		Users: usersDetail,
+	},nil
 }
