@@ -29,7 +29,16 @@ message GetAllUserResponse{
     repeated UserDetail users = 1;
 }
 
+message GetUserRequest{
+    string username = 1;
+}
+
+message GetUserResponse{
+    UserDetail user = 1;
+}
+
 service UserService{
     rpc CreateUser (CreateUserRequest) returns (CreateUserResponse){}
     rpc GetAllUser (google.protobuf.Empty) returns (GetAllUserResponse){}
+    rpc GetUser (GetUserRequest) returns (GetUserResponse){}
 }

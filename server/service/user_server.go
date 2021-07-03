@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 
@@ -9,6 +10,7 @@ import (
 	db_model "github.com/Thiti-Dev/traveller/database/models"
 	"github.com/Thiti-Dev/traveller/packages/pkg_bcrypt"
 	"github.com/Thiti-Dev/traveller/pb"
+	"github.com/go-pg/pg/v10"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
@@ -103,5 +105,31 @@ func (server *UserServer) GetAllUser(ctx context.Context, req *emptypb.Empty) (*
 
 	return &pb.GetAllUserResponse{
 		Users: usersDetail,
+	},nil
+}
+
+func (server *UserServer) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserResponse, error){
+	username := req.GetUsername()
+
+	dbInstance := database.GetEstablishedPostgresConnection()
+
+	user := new(db_model.User)
+	err := dbInstance.Model(user).Where("username = ?",username).Limit(1).Select()
+	if err != nil{
+		if err == pg.ErrNoRows{
+			return nil,status.Errorf(
+				codes.NotFound,
+				fmt.Sprintf("username: %v doesn't exist on the server",username),
+			)
+		}else{
+			log.Fatalf("error getting user : %v",errors.Unwrap(err))
+		}
+	}
+
+	return &pb.GetUserResponse{
+		User: &pb.UserDetail{
+			Id: user.Id,
+			Username: user.Username,
+		},
 	},nil
 }
