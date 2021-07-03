@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"log"
 	"net"
 
@@ -13,26 +12,22 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-// ─── INTERCEPTOR ────────────────────────────────────────────────────────────────
-func unaryInterceptor(ctx context.Context, req interface{},info *grpc.UnaryServerInfo, handler grpc.UnaryHandler)(interface{},error){
-	log.Println("--> unary interceptor: " , info.FullMethod) // /{proj_name}.{service_name}}/{service_method} -> /traveller.UserService/LoginUser
-	return handler(ctx,req)
+func accessibleRoles() map[string][]string{
+	const userServicePath = "/traveller.UserService/" 
+	return map[string][]string{
+		userServicePath + "GetAllUser": {"user"},
+	}
 }
-func streamInterceptor(srv interface{},stream grpc.ServerStream,info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
-	log.Println("--> unary interceptor: " , info.FullMethod) // /{proj_name}.{service_name}}/{service_method} -> /traveller.UserService/LoginUser
-	return handler(srv,stream)
-}
-// ────────────────────────────────────────────────────────────────────────────────
-
 
 func runGRPCServer(
 	userService pb.UserServiceServer,
 	authService pb.AuthServiceServer,
 	listener net.Listener,
 )error{
+	authInterceptor := service.NewAuthInterceptor(config.GetEnvironmentValue("JWT_SECRET"),accessibleRoles())
 	grpcServer := grpc.NewServer(
-		grpc.UnaryInterceptor(unaryInterceptor),
-		grpc.StreamInterceptor(streamInterceptor),
+		grpc.UnaryInterceptor(authInterceptor.Unary()),
+		grpc.StreamInterceptor(authInterceptor.Stream()),
 	)
 
 	pb.RegisterUserServiceServer(grpcServer,userService)
