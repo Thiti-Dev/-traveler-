@@ -13,7 +13,7 @@ type ProofThread struct {
 	CreatedAt								time.Time
 	AmountOfDayWouldBeLastUntil				int64
 	RevealAt								time.Time
-	IsSolved								bool
+	IsSolved								bool `pg:",use_zero"`
 	SolverId								int64
 	SolverAka								string
 	SolvedAt								time.Time
