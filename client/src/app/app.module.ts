@@ -17,15 +17,24 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatCardModule } from '@angular/material/card';
+import { AuthorizationComponent } from './authorization/authorization.component';
 
 // ────────────────────────────────────────────────────────────────────────────────
 
+//
+// ─── FORM ───────────────────────────────────────────────────────────────────────
+//
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+// ────────────────────────────────────────────────────────────────────────────────
+
 @NgModule({
-  declarations: [AppComponent, LandingComponent],
+  declarations: [AppComponent, LandingComponent, AuthorizationComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatToolbarModule,
     MatButtonModule,
     MatListModule,
