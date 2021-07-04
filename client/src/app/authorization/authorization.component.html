@@ -1,0 +1,21 @@
+<div class="main-panel">
+  <mat-card style="width: 500px;">
+    <mat-card-title>Who you are . . .</mat-card-title>
+    <mat-card-subtitle style="margin-top: 15px;">Note: if the account you trying to login doesn't exist, it will automatically create the new one </mat-card-subtitle>
+    <mat-card-content>
+      <mat-form-field style="width: 100%;" appearance="fill">
+        <mat-label>Please Provide us your username</mat-label>
+        <input matInput placeholder="traveller-xxx" [formControl]="username" required>
+        <mat-error *ngIf="username.invalid">{{getUsernameErrorMessage()}}</mat-error>
+      </mat-form-field>
+      <mat-form-field style="width: 100%;" appearance="fill">
+        <mat-label>Password</mat-label>
+        <input type="password" matInput [formControl]="password" required>
+        <mat-error *ngIf="password.invalid">{{getPasswordErrorMessage()}}</mat-error>
+      </mat-form-field>
+      <mat-card-footer style="padding: 15px;">
+        <button (click)="onGetIn()" style="width: 100%;padding: 5px;" mat-raised-button color="primary">Get inside</button>
+      </mat-card-footer>
+    </mat-card-content>
+  </mat-card>
+</div>
