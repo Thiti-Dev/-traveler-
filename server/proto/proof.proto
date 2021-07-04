@@ -1,6 +1,7 @@
 syntax = "proto3";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
+import "common_message.proto";
 package traveller;
 
 option go_package="./;pb";
@@ -32,8 +33,17 @@ message GetAllProofThreadResponse{
     repeated ProofThread proof_threads=1;
 }
 
+message RemoveProofThreadRequest{
+    string thread_id = 1;
+}
+
+message RemoveProofThreadResponse{
+    ResultMsg result_msg=1;
+}
+
 
 service ProofService{
     rpc CreateProofThread (CreateProofThreadRequest) returns (CreateProofThreadResponse){}
     rpc GetAllProofThread (google.protobuf.Empty) returns (GetAllProofThreadResponse){}
+    rpc RemoveProofThread (RemoveProofThreadRequest) returns (RemoveProofThreadResponse){}
 }

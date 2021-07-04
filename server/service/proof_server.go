@@ -9,6 +9,7 @@ import (
 	"github.com/Thiti-Dev/traveller/database"
 	db_model "github.com/Thiti-Dev/traveller/database/models"
 	"github.com/Thiti-Dev/traveller/pb"
+	"github.com/go-pg/pg/v10"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
@@ -106,4 +107,67 @@ func (server *ProofServer) GetAllProofThread(ctx context.Context, req *emptypb.E
 	return &pb.GetAllProofThreadResponse{
 		ProofThreads: proofThreadsAsPb,
 	},nil
+}
+
+func (server *ProofServer) RemoveProofThread(ctx context.Context, req *pb.RemoveProofThreadRequest) (*pb.RemoveProofThreadResponse, error){
+	md,ok := metadata.FromIncomingContext(ctx)
+	if ok {
+		userIdAsString := md["user-id"][0] // caller id
+		userId,_ := strconv.ParseInt(userIdAsString,10,64)
+
+		thread_id := req.GetThreadId()
+
+		dbInstance := database.GetEstablishedPostgresConnection()
+
+		//FETCHING FOR PROOF THREAD
+		proofThread := new(db_model.ProofThread)
+		err := dbInstance.Model(proofThread).Where("id = ?",thread_id).Select()
+		if err != nil {
+			if err == pg.ErrNoRows{	
+				return nil,status.Errorf(
+					codes.NotFound,
+					fmt.Sprintf("thread_id:%v doesn't exist on the database",thread_id),
+				)
+			}else{
+				log.Fatalf("error getting user : %v",err)
+			}
+		}
+		// ─────────────────────────────────────────────────────────────────
+
+		// ─── CHECK IF USER HAS RIGHTS TO REMOVE THE THREAD ───────────────
+		if userId != proofThread.CreatorId{
+			return nil,status.Errorf(
+				codes.PermissionDenied,
+				"You don't have the rights to remove the thread",
+			)
+		}
+		// ────────────────────────────────────────────────────────────────────────────────
+
+		// ─── REMOVE THE THREAD ───────────────────────────────────────────
+		res, err := dbInstance.Model(&db_model.ProofThread{}).Where("id = ?", thread_id).Delete()
+		if err != nil {
+			return nil,status.Errorf(
+				codes.Internal,
+				fmt.Sprintf("error removing the thread id of %v with err: %v",thread_id,err),
+			)
+		}
+		fmt.Printf("Removing res:%v",res)
+		// ─────────────────────────────────────────────────────────────────
+
+		return &pb.RemoveProofThreadResponse{
+			ResultMsg: &pb.ResultMsg{
+				Success: true,
+				Message: "successfully remove the thread",
+			},
+		},nil
+
+
+
+
+	}else{
+		return nil, status.Errorf(
+			codes.Internal,
+			"This shouldn't happened",
+		)
+	}
 }
