@@ -17,6 +17,7 @@ var databaseConnection *pg.DB
 func createSchema(db *pg.DB) error {
     models := []interface{}{
         (*models.User)(nil),
+		(*models.ProofThread)(nil),
     }
 
     for _, model := range models {
