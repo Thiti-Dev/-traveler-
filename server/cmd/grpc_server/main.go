@@ -13,9 +13,14 @@ import (
 )
 
 func accessibleRoles() map[string][]string{
-	const userServicePath = "/traveller.UserService/" 
+	const (
+		userServicePath = "/traveller.UserService/"
+		proofServicePath = "/traveller.ProofService/"
+
+)
 	return map[string][]string{
 		userServicePath + "GetAllUser": {"user"},
+		proofServicePath + "CreateProofThread": {"user"},
 	}
 }
 
@@ -33,6 +38,7 @@ func runGRPCServer(
 
 	pb.RegisterUserServiceServer(grpcServer,userService)
 	pb.RegisterAuthServiceServer(grpcServer,authService)
+	pb.RegisterProofServiceServer(grpcServer,proofService)
 	reflection.Register(grpcServer) // register the reflection
 	log.Printf("Starting GRPC server at %s", listener.Addr().String())
 	return grpcServer.Serve(listener)

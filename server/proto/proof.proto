@@ -5,17 +5,29 @@ package traveller;
 option go_package="./;pb";
 
 message ProofThread{
-    int64 creator_id=1;
-    string secret_code=2;
-    google.protobuf.Timestamp created_at=3;
-    google.protobuf.Timestamp reveal_at=4;
-    bool is_solved=5;
-    int64 solver_id=6;
-    string solver_aka=7;
-    google.protobuf.Timestamp solved_at=8;
+    int64 id = 1;
+    int64 creator_id=2;
+    string content_msg=3;
+    string secret_code=4;
+    google.protobuf.Timestamp created_at=5;
+    int64 amount_of_day_would_be_last_until=6;
+    google.protobuf.Timestamp reveal_at=7;
+    bool is_solved=8;
+    int64 solver_id=9;
+    string solver_aka=10;
+    google.protobuf.Timestamp solved_at=11;
+}
+
+message CreateProofThreadRequest{
+    string content_msg =1;
+    int64 amount_of_day_would_be_last_until=2;
+}
+
+message CreateProofThreadResponse{
+    ProofThread proof_thread=1;
 }
 
 
 service ProofService{
-    
+    rpc CreateProofThread (CreateProofThreadRequest) returns (CreateProofThreadResponse){}
 }
