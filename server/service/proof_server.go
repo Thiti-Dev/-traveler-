@@ -8,6 +8,7 @@ import (
 
 	"github.com/Thiti-Dev/traveller/database"
 	db_model "github.com/Thiti-Dev/traveller/database/models"
+	"github.com/Thiti-Dev/traveller/packages/pkg_rand"
 	"github.com/Thiti-Dev/traveller/pb"
 	"github.com/go-pg/pg/v10"
 	"google.golang.org/grpc/codes"
@@ -37,7 +38,7 @@ func (server *ProofServer) CreateProofThread(ctx context.Context, req *pb.Create
 		proofThread := &db_model.ProofThread{
 			CreatorId: userId,
 			ContentMsg: req.GetContentMsg(),
-			SecretCode: "xxx64xxx",
+			SecretCode: pkg_rand.RandStringRunes(10), // get random string of 10 characters
 			AmountOfDayWouldBeLastUntil: req.GetAmountOfDayWouldBeLastUntil(),
 			IsSolved: false,
 			CreatedAt: time_now.AsTime(),
