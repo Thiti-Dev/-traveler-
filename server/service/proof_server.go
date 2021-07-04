@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
+	"log"
 	"strconv"
 
 	"github.com/Thiti-Dev/traveller/database"
@@ -11,6 +12,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 	ts "google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -74,4 +76,34 @@ func (server *ProofServer) CreateProofThread(ctx context.Context, req *pb.Create
 			"This shouldn't happened",
 		)
 	}
+}
+
+func (server *ProofServer) GetAllProofThread(ctx context.Context, req *emptypb.Empty) (*pb.GetAllProofThreadResponse, error){
+	dbInstance := database.GetEstablishedPostgresConnection()
+	var proofThreads []db_model.ProofThread
+	err := dbInstance.Model(&proofThreads).Select()
+	if err !=nil{
+		log.Fatalf("problem fetching all user:%v",err)
+	}
+
+	var proofThreadsAsPb []*pb.ProofThread
+	for _,thread := range proofThreads{
+		proofThreadsAsPb = append(proofThreadsAsPb, &pb.ProofThread{
+			Id: thread.Id,
+			CreatorId: thread.CreatorId,
+			ContentMsg: thread.ContentMsg,
+			SecretCode: thread.SecretCode,
+			AmountOfDayWouldBeLastUntil: thread.AmountOfDayWouldBeLastUntil,
+			CreatedAt: ts.New(thread.CreatedAt),
+			RevealAt: ts.New(thread.RevealAt),
+			IsSolved: thread.IsSolved,
+			SolverId: thread.SolverId,
+			SolverAka: thread.SolverAka,
+			SolvedAt: ts.New(thread.SolvedAt),
+		})
+	}
+
+	return &pb.GetAllProofThreadResponse{
+		ProofThreads: proofThreadsAsPb,
+	},nil
 }
