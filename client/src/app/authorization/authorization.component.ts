@@ -1,5 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
+
+let invalid_msg_packs = {
+  username: {
+    required: 'You mush tell us who you are or remain un-authorizaed',
+  },
+  password: {
+    required:
+      'This is not the place where you can walk in and being someone else . . .',
+  },
+};
+
+interface IAuthCredentials {
+  username: string;
+  password: string;
+}
 
 @Component({
   selector: 'app-authorization',
@@ -11,21 +26,29 @@ export class AuthorizationComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  username = new FormControl('', [Validators.required]); //TODO orderized in formControlGroup
-  password = new FormControl('', [Validators.required]); //TODO orderized in formControlGroup
+  //
+  // ─── VARS ───────────────────────────────────────────────────────────────────────
+  //
+  authCredentials = new FormGroup({
+    username: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required]),
+  });
+  login_in_process = false;
+  // ────────────────────────────────────────────────────────────────────────────────
 
-  getUsernameErrorMessage() {
-    return this.username.hasError('required')
-      ? 'You mush tell us who you are or remain un-authorizaed'
-      : '';
-  }
-  getPasswordErrorMessage() {
-    return this.password.hasError('required')
-      ? 'This is not the place where you can walk in and being someone else . . .'
-      : '';
+  getSpecificFormGroupErrorMessage(fg: FormGroup, key: string) {
+    if (fg.get(key)?.hasError('required')) {
+      return invalid_msg_packs[key as keyof typeof invalid_msg_packs].required;
+    }
+    return '';
   }
 
-  onGetIn() {
-    console.log(this.username.value, this.password.value);
+  onGetIn(formData: IAuthCredentials) {
+    if (this.authCredentials.invalid) {
+      return;
+    }
+    console.log(formData);
+    // TODO make a call request to the (rpc)Login
+    this.login_in_process = true;
   }
 }

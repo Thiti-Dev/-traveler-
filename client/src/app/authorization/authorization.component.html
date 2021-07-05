@@ -3,19 +3,22 @@
     <mat-card-title>Who you are . . .</mat-card-title>
     <mat-card-subtitle style="margin-top: 15px;">Note: if the account you trying to login doesn't exist, it will automatically create the new one </mat-card-subtitle>
     <mat-card-content>
-      <mat-form-field style="width: 100%;" appearance="fill">
-        <mat-label>Please Provide us your username</mat-label>
-        <input matInput placeholder="traveller-xxx" [formControl]="username" required>
-        <mat-error *ngIf="username.invalid">{{getUsernameErrorMessage()}}</mat-error>
-      </mat-form-field>
-      <mat-form-field style="width: 100%;" appearance="fill">
-        <mat-label>Password</mat-label>
-        <input type="password" matInput [formControl]="password" required>
-        <mat-error *ngIf="password.invalid">{{getPasswordErrorMessage()}}</mat-error>
-      </mat-form-field>
-      <mat-card-footer style="padding: 15px;">
-        <button (click)="onGetIn()" style="width: 100%;padding: 5px;" mat-raised-button color="primary">Get inside</button>
-      </mat-card-footer>
+      <form [formGroup]="authCredentials" (ngSubmit)="onGetIn(authCredentials.value)" class="form">
+        <mat-form-field style="width: 100%;" appearance="fill">
+          <mat-label>Please Provide us your username</mat-label>
+          <input matInput placeholder="traveller-xxx" formControlName="username" required>
+          <mat-error *ngIf="authCredentials.get('username')!.invalid">{{ getSpecificFormGroupErrorMessage(authCredentials,'username') }}</mat-error>
+        </mat-form-field>
+        <mat-form-field style="width: 100%;" appearance="fill">
+          <mat-label>Password</mat-label>
+          <input type="password" matInput formControlName="password" required>
+          <mat-error *ngIf="authCredentials.get('password')!.invalid">{{ getSpecificFormGroupErrorMessage(authCredentials,'password') }}</mat-error>
+        </mat-form-field>
+
+        <mat-card-footer style="padding: 15px;">
+          <button type="submit" style="width: 100%;padding: 5px;" mat-raised-button color="primary" [class.spinner]="login_in_process" [disabled]="login_in_process">Get inside</button>
+        </mat-card-footer>
+      </form>
     </mat-card-content>
   </mat-card>
 </div>
