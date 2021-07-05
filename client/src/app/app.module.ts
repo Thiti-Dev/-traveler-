@@ -36,10 +36,11 @@ import {
   ConfirmBoxConfigModule,
   ToastNotificationConfigModule,
 } from '@costlydeveloper/ngx-awesome-popup';
+import { ProofThreadComponent } from './proof-thread/proof-thread.component';
 // ────────────────────────────────────────────────────────────────────────────────
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent, AuthorizationComponent],
+  declarations: [AppComponent, LandingComponent, AuthorizationComponent, ProofThreadComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
