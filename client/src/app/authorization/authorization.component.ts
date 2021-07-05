@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { DialogLayoutDisplay } from '@costlydeveloper/ngx-awesome-popup';
+import { AuthService } from '../shared/services/auth.service';
+import { ToastService } from '../shared/services/toast.service';
 
 let invalid_msg_packs = {
   username: {
@@ -22,7 +26,11 @@ interface IAuthCredentials {
   styleUrls: ['./authorization.component.scss'],
 })
 export class AuthorizationComponent implements OnInit {
-  constructor() {}
+  constructor(
+    private authService: AuthService,
+    private toastService: ToastService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {}
 
@@ -43,12 +51,40 @@ export class AuthorizationComponent implements OnInit {
     return '';
   }
 
-  onGetIn(formData: IAuthCredentials) {
+  async onGetIn(formData: IAuthCredentials) {
     if (this.authCredentials.invalid) {
       return;
     }
     console.log(formData);
     // TODO make a call request to the (rpc)Login
     this.login_in_process = true;
+
+    const mapped_response = await this.authService.login(formData);
+    if (mapped_response.success) {
+      const token = mapped_response.data!.accessToken;
+      const authenticated = this.authService.decodeTokenAndStoreIfValid(token);
+      if (!authenticated) {
+        return this.toastService.showToastMessage(DialogLayoutDisplay.DANGER, {
+          title: 'Error',
+          message: 'username or password is incorrect',
+        });
+      }
+      this.toastService.showToastMessage(DialogLayoutDisplay.SUCCESS, {
+        title: 'You are allowed to get in',
+        message: 'Redirecting in 2 seconds . . .',
+      });
+      setTimeout(() => {
+        this.router.navigate(['/proof-thread']);
+      }, 2000);
+    } else {
+      if (mapped_response.code === 'CredentialNotValid') {
+        console.log('Username/password is invalid');
+        this.toastService.showToastMessage(DialogLayoutDisplay.DANGER, {
+          title: 'Error',
+          message: 'username or password is incorrect',
+        });
+      }
+    }
+    this.login_in_process = false;
   }
 }
