@@ -16,23 +16,37 @@ import jwt_decode from 'jwt-decode';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private client: AuthServiceClient;
-  public isAuthenticated: boolean;
+  public isAuthenticated: boolean | null; // null indicated the the app just run
   public userData: ITokenSignature | null;
   constructor(private router: Router) {
     this.client = new AuthServiceClient('http://localhost:8080'); // envoy proxy server
-    this.isAuthenticated = false; // by default
+    this.isAuthenticated = null; // by default
     this.userData = null;
+    this.hydrateAuthenticationStateFromLocalStorage(); // hydrate on first construtor runs
+  }
+
+  public hydrateAuthenticationStateFromLocalStorage() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      this.isAuthenticated = false; // flagged as false
+      return;
+    }
+    this.decodeTokenAndStoreIfValid(token);
   }
 
   public decodeTokenAndStoreIfValid(token: string): boolean {
     const decoded_data = jwt_decode(token) as ITokenSignature;
     // check if already expired or not
-    if (Date.now() / 1000 >= decoded_data.exp) return false;
+    if (Date.now() / 1000 >= decoded_data.exp) {
+      this.isAuthenticated = false;
+      return false;
+    }
     // ─────────────────────────────────────────────────────────────────
 
     this.userData = decoded_data;
     this.isAuthenticated = true;
     console.log(decoded_data);
+    localStorage.setItem('token', token);
     return true;
   }
 
