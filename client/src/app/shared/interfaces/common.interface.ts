@@ -5,7 +5,12 @@ export interface IResponseMapped<T = any> {
   // ─── TOGETHER ───────────────────────────────────────────────────────────────────
   //
   message?: string;
-  code?: string | number;
+  code?:
+    | 'Notfound'
+    | 'ValidationError'
+    | 'InternalError'
+    | 'BadRequest'
+    | 'CredentialNotValid';
   // ────────────────────────────────────────────────────────────────────────────────
 
   data?: T;
