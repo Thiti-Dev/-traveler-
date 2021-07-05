@@ -27,6 +27,17 @@ import { AuthorizationComponent } from './authorization/authorization.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // ────────────────────────────────────────────────────────────────────────────────
 
+//
+// ─── TOAST STUFF ────────────────────────────────────────────────────────────────
+//
+import {
+  NgxAwesomePopupModule,
+  DialogConfigModule,
+  ConfirmBoxConfigModule,
+  ToastNotificationConfigModule,
+} from '@costlydeveloper/ngx-awesome-popup';
+// ────────────────────────────────────────────────────────────────────────────────
+
 @NgModule({
   declarations: [AppComponent, LandingComponent, AuthorizationComponent],
   imports: [
@@ -43,6 +54,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatInputModule,
     MatCardModule,
+
+    //TOAST
+    NgxAwesomePopupModule.forRoot(), // Essential, mandatory main module.
+    DialogConfigModule.forRoot(), // Needed for instantiating dynamic components.
+    ConfirmBoxConfigModule.forRoot(), // Needed for instantiating confirm boxes.
+    ToastNotificationConfigModule.forRoot(), // Needed for instantiating toast notifications.
+    // ─────────────────────────────────────────────────────────────────
   ],
   providers: [],
   bootstrap: [AppComponent],
