@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatCardModule } from '@angular/material/card';
 import { AuthorizationComponent } from './authorization/authorization.component';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 // ────────────────────────────────────────────────────────────────────────────────
 
@@ -39,14 +40,26 @@ import {
 import { ProofThreadComponent } from './proof-thread/proof-thread.component';
 // ────────────────────────────────────────────────────────────────────────────────
 
+//
+// ─── FLEX LAYOUT ────────────────────────────────────────────────────────────────
+//
+import { FlexLayoutModule } from '@angular/flex-layout';
+// ────────────────────────────────────────────────────────────────────────────────
+
 @NgModule({
-  declarations: [AppComponent, LandingComponent, AuthorizationComponent, ProofThreadComponent],
+  declarations: [
+    AppComponent,
+    LandingComponent,
+    AuthorizationComponent,
+    ProofThreadComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    FlexLayoutModule,
     MatToolbarModule,
     MatButtonModule,
     MatListModule,
@@ -55,6 +68,7 @@ import { ProofThreadComponent } from './proof-thread/proof-thread.component';
     MatFormFieldModule,
     MatInputModule,
     MatCardModule,
+    MatGridListModule,
 
     //TOAST
     NgxAwesomePopupModule.forRoot(), // Essential, mandatory main module.
