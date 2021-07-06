@@ -32,7 +32,11 @@ export class AuthorizationComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.authService.isAuthenticated) {
+      this.router.navigate(['/proof-thread']);
+    }
+  }
 
   //
   // ─── VARS ───────────────────────────────────────────────────────────────────────
