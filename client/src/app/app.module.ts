@@ -46,6 +46,12 @@ import { ProofThreadComponent } from './proof-thread/proof-thread.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 // ────────────────────────────────────────────────────────────────────────────────
 
+//
+// ─── NG STYLE ───────────────────────────────────────────────────────────────────
+//
+import { CommonModule } from '@angular/common';
+// ────────────────────────────────────────────────────────────────────────────────
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,6 +63,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
