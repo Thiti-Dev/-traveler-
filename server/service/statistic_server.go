@@ -52,3 +52,19 @@ func (server *StatisticServer) GetTotalSolvedThread(ctx context.Context, req *em
 		TotalSolvedThread: int64(solved_thread_count),
 	},nil
 }
+
+func (server *StatisticServer) GetTotalTraveler(ctx context.Context, req *emptypb.Empty) (*pb.GetTotalTravelerResponse, error) {
+
+	dbInstance:= database.GetEstablishedPostgresConnection()
+	solved_thread_count ,err := dbInstance.Model((*db_model.ProofThread)(nil)).Where("is_solved = ?", true).DistinctOn("solver_id").Count() //TODO find out what ()() actually means
+	if err != nil{
+		return nil, status.Errorf(
+			codes.Internal,
+			"Cannot get the count of the total solved thread",
+		)
+	}
+
+	return &pb.GetTotalTravelerResponse{
+		TotalTravler: int64(solved_thread_count),
+	},nil
+}

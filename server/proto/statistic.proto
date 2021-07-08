@@ -11,7 +11,12 @@ message GetTotalSolvedThreadResponse{
     int64 total_solved_thread=1;
 }
 
+message GetTotalTravelerResponse{
+    int64 total_travler=1;
+}
+
 service StatisticService{
     rpc GetTotalUser(google.protobuf.Empty) returns (GetTotalUserResponse){}
     rpc GetTotalSolvedThread(google.protobuf.Empty) returns (GetTotalSolvedThreadResponse){}
+    rpc GetTotalTraveler(google.protobuf.Empty) returns (GetTotalTravelerResponse){}
 }
