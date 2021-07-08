@@ -22,6 +22,7 @@ func accessibleRoles() map[string][]string{
 		userServicePath + "GetAllUser": {"user"},
 		proofServicePath + "CreateProofThread": {"user"},
 		proofServicePath + "RemoveProofThread": {"user"},
+		proofServicePath + "Proofing": {"user"},
 	}
 }
 

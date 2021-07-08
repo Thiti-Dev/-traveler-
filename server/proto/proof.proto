@@ -41,9 +41,20 @@ message RemoveProofThreadResponse{
     ResultMsg result_msg=1;
 }
 
+message ProofingRequest{
+    int64 thread_id = 1;
+    string secret_code = 2;
+}
+
+message ProofingResponse{
+    ResultMsg result_msg=1;
+    ProofThread updated_thread=2;
+}
+
 
 service ProofService{
     rpc CreateProofThread (CreateProofThreadRequest) returns (CreateProofThreadResponse){}
     rpc GetAllProofThread (google.protobuf.Empty) returns (GetAllProofThreadResponse){}
     rpc RemoveProofThread (RemoveProofThreadRequest) returns (RemoveProofThreadResponse){}
+    rpc Proofing (ProofingRequest) returns (ProofingResponse){}
 }

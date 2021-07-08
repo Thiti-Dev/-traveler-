@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"time"
 
 	"github.com/Thiti-Dev/traveller/database"
+	"github.com/Thiti-Dev/traveller/database/models"
 	db_model "github.com/Thiti-Dev/traveller/database/models"
 	"github.com/Thiti-Dev/traveller/packages/pkg_rand"
 	"github.com/Thiti-Dev/traveller/pb"
@@ -165,6 +167,83 @@ func (server *ProofServer) RemoveProofThread(ctx context.Context, req *pb.Remove
 
 
 
+	}else{
+		return nil, status.Errorf(
+			codes.Internal,
+			"This shouldn't happened",
+		)
+	}
+}
+
+// @PROTECTED-ROUTE
+func (server *ProofServer) Proofing(ctx context.Context, req *pb.ProofingRequest) (*pb.ProofingResponse, error){
+	md,ok := metadata.FromIncomingContext(ctx)
+	if ok {
+		userIdAsString := md["user-id"][0] // caller id
+		userId,_ := strconv.ParseInt(userIdAsString,10,64)
+
+		dbInstance := database.GetEstablishedPostgresConnection()
+
+		proofThread := &models.ProofThread{
+			Id: req.GetThreadId(),
+		}
+		err := dbInstance.Model(proofThread).WherePK().Select()
+		if err != nil{
+			if err == pg.ErrNoRows{	
+				return nil,status.Errorf(
+					codes.NotFound,
+					fmt.Sprintf("thread_id:%v doesn't exist on the database",proofThread.Id),
+				)
+			}else{
+				log.Fatalf("error getting user : %v",err)
+			}
+		}
+
+
+		// @RESP -> secret code not match
+		if req.GetSecretCode() != proofThread.SecretCode{
+			return &pb.ProofingResponse{
+				ResultMsg: &pb.ResultMsg{
+					Success: false,
+					Message: "Not a valid secret code" ,
+				},
+			},nil
+		}
+
+		// @RESP -> secret code is matched
+		proofThread.IsSolved = true
+		proofThread.SolverId = userId
+		proofThread.SolverAka = "-anonymous-"
+		proofThread.SolvedAt = time.Now()
+		_,err = dbInstance.Model(proofThread).WherePK().Update()
+		if err != nil {
+			return nil,status.Errorf(
+				codes.Internal,
+				fmt.Sprintf("Cannot make a update operation on the proof_thread_id:%v",proofThread.Id),
+			)
+		}
+
+
+
+
+		return &pb.ProofingResponse{
+			ResultMsg: &pb.ResultMsg{
+				Success: true,
+			},
+			UpdatedThread: &pb.ProofThread{
+				Id: proofThread.Id,
+				CreatorId: proofThread.CreatorId,
+				ContentMsg: proofThread.ContentMsg,
+				SecretCode: proofThread.SecretCode,
+				AmountOfDayWouldBeLastUntil: proofThread.AmountOfDayWouldBeLastUntil,
+				CreatedAt: ts.New(proofThread.CreatedAt),
+				RevealAt: ts.New(proofThread.RevealAt),
+				IsSolved: proofThread.IsSolved,
+				SolverId: proofThread.SolverId,
+				SolverAka: proofThread.SolverAka,
+				SolvedAt: ts.New(proofThread.SolvedAt),
+			},
+		},nil
 	}else{
 		return nil, status.Errorf(
 			codes.Internal,
