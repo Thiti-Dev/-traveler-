@@ -1,8 +1,12 @@
 syntax = "proto3";
 package traveller;
-
+import "google/protobuf/empty.proto";
 option go_package="./;pb";
 
+message GetTotalUserResponse{
+    int64 total_user=1;
+}
+
 service StatisticService{
-    
+    rpc GetTotalUser(google.protobuf.Empty) returns (GetTotalUserResponse){}
 }

@@ -42,6 +42,7 @@ func runGRPCServer(
 	pb.RegisterUserServiceServer(grpcServer,userService)
 	pb.RegisterAuthServiceServer(grpcServer,authService)
 	pb.RegisterProofServiceServer(grpcServer,proofService)
+	pb.RegisterStatisticServiceServer(grpcServer,statisticService)
 	reflection.Register(grpcServer) // register the reflection
 	log.Printf("Starting GRPC server at %s", listener.Addr().String())
 	return grpcServer.Serve(listener)
