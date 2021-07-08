@@ -30,6 +30,7 @@ func runGRPCServer(
 	userService pb.UserServiceServer,
 	authService pb.AuthServiceServer,
 	proofService pb.ProofServiceServer,
+	statisticService pb.StatisticServiceServer,
 	listener net.Listener,
 )error{
 	authInterceptor := service.NewAuthInterceptor(config.GetEnvironmentValue("JWT_SECRET"),accessibleRoles())
@@ -63,5 +64,6 @@ func main() {
 	userService := service.NewUserServer()
 	authService := service.NewAuthServer()
 	proofService := service.NewProofServer()
-	runGRPCServer(userService,authService,proofService,listener)
+	statisticService := service.NewStatisticServer()
+	runGRPCServer(userService,authService,proofService,statisticService,listener)
 }
