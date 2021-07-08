@@ -199,6 +199,13 @@ func (server *ProofServer) Proofing(ctx context.Context, req *pb.ProofingRequest
 			}
 		}
 
+		if proofThread.IsSolved{
+			return nil, status.Errorf(
+				codes.PermissionDenied,
+				"The thread has already been solved",
+			)
+		}
+
 
 		// @RESP -> secret code not match
 		if req.GetSecretCode() != proofThread.SecretCode{
