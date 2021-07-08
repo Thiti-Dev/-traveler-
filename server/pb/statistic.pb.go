@@ -72,6 +72,53 @@ func (x *GetTotalUserResponse) GetTotalUser() int64 {
 	return 0
 }
 
+type GetTotalSolvedThreadResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	TotalSolvedThread int64 `protobuf:"varint,1,opt,name=total_solved_thread,json=totalSolvedThread,proto3" json:"total_solved_thread,omitempty"`
+}
+
+func (x *GetTotalSolvedThreadResponse) Reset() {
+	*x = GetTotalSolvedThreadResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_statistic_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetTotalSolvedThreadResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetTotalSolvedThreadResponse) ProtoMessage() {}
+
+func (x *GetTotalSolvedThreadResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_statistic_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetTotalSolvedThreadResponse.ProtoReflect.Descriptor instead.
+func (*GetTotalSolvedThreadResponse) Descriptor() ([]byte, []int) {
+	return file_statistic_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *GetTotalSolvedThreadResponse) GetTotalSolvedThread() int64 {
+	if x != nil {
+		return x.TotalSolvedThread
+	}
+	return 0
+}
+
 var File_statistic_proto protoreflect.FileDescriptor
 
 var file_statistic_proto_rawDesc = []byte{
@@ -82,13 +129,24 @@ var file_statistic_proto_rawDesc = []byte{
 	0x54, 0x6f, 0x74, 0x61, 0x6c, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
 	0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x5f, 0x75, 0x73, 0x65, 0x72, 0x18,
 	0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x09, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x55, 0x73, 0x65, 0x72,
-	0x32, 0x5d, 0x0a, 0x10, 0x53, 0x74, 0x61, 0x74, 0x69, 0x73, 0x74, 0x69, 0x63, 0x53, 0x65, 0x72,
-	0x76, 0x69, 0x63, 0x65, 0x12, 0x49, 0x0a, 0x0c, 0x47, 0x65, 0x74, 0x54, 0x6f, 0x74, 0x61, 0x6c,
-	0x55, 0x73, 0x65, 0x72, 0x12, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a, 0x1f, 0x2e, 0x74,
-	0x72, 0x61, 0x76, 0x65, 0x6c, 0x6c, 0x65, 0x72, 0x2e, 0x47, 0x65, 0x74, 0x54, 0x6f, 0x74, 0x61,
-	0x6c, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42,
-	0x07, 0x5a, 0x05, 0x2e, 0x2f, 0x3b, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x22, 0x4e, 0x0a, 0x1c, 0x47, 0x65, 0x74, 0x54, 0x6f, 0x74, 0x61, 0x6c, 0x53, 0x6f, 0x6c, 0x76,
+	0x65, 0x64, 0x54, 0x68, 0x72, 0x65, 0x61, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x2e, 0x0a, 0x13, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x5f, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x64,
+	0x5f, 0x74, 0x68, 0x72, 0x65, 0x61, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x11, 0x74,
+	0x6f, 0x74, 0x61, 0x6c, 0x53, 0x6f, 0x6c, 0x76, 0x65, 0x64, 0x54, 0x68, 0x72, 0x65, 0x61, 0x64,
+	0x32, 0xb8, 0x01, 0x0a, 0x10, 0x53, 0x74, 0x61, 0x74, 0x69, 0x73, 0x74, 0x69, 0x63, 0x53, 0x65,
+	0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x49, 0x0a, 0x0c, 0x47, 0x65, 0x74, 0x54, 0x6f, 0x74, 0x61,
+	0x6c, 0x55, 0x73, 0x65, 0x72, 0x12, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a, 0x1f, 0x2e,
+	0x74, 0x72, 0x61, 0x76, 0x65, 0x6c, 0x6c, 0x65, 0x72, 0x2e, 0x47, 0x65, 0x74, 0x54, 0x6f, 0x74,
+	0x61, 0x6c, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00,
+	0x12, 0x59, 0x0a, 0x14, 0x47, 0x65, 0x74, 0x54, 0x6f, 0x74, 0x61, 0x6c, 0x53, 0x6f, 0x6c, 0x76,
+	0x65, 0x64, 0x54, 0x68, 0x72, 0x65, 0x61, 0x64, 0x12, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c,
+	0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79,
+	0x1a, 0x27, 0x2e, 0x74, 0x72, 0x61, 0x76, 0x65, 0x6c, 0x6c, 0x65, 0x72, 0x2e, 0x47, 0x65, 0x74,
+	0x54, 0x6f, 0x74, 0x61, 0x6c, 0x53, 0x6f, 0x6c, 0x76, 0x65, 0x64, 0x54, 0x68, 0x72, 0x65, 0x61,
+	0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x07, 0x5a, 0x05, 0x2e,
+	0x2f, 0x3b, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -103,16 +161,19 @@ func file_statistic_proto_rawDescGZIP() []byte {
 	return file_statistic_proto_rawDescData
 }
 
-var file_statistic_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_statistic_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_statistic_proto_goTypes = []interface{}{
-	(*GetTotalUserResponse)(nil), // 0: traveller.GetTotalUserResponse
-	(*emptypb.Empty)(nil),        // 1: google.protobuf.Empty
+	(*GetTotalUserResponse)(nil),         // 0: traveller.GetTotalUserResponse
+	(*GetTotalSolvedThreadResponse)(nil), // 1: traveller.GetTotalSolvedThreadResponse
+	(*emptypb.Empty)(nil),                // 2: google.protobuf.Empty
 }
 var file_statistic_proto_depIdxs = []int32{
-	1, // 0: traveller.StatisticService.GetTotalUser:input_type -> google.protobuf.Empty
-	0, // 1: traveller.StatisticService.GetTotalUser:output_type -> traveller.GetTotalUserResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
+	2, // 0: traveller.StatisticService.GetTotalUser:input_type -> google.protobuf.Empty
+	2, // 1: traveller.StatisticService.GetTotalSolvedThread:input_type -> google.protobuf.Empty
+	0, // 2: traveller.StatisticService.GetTotalUser:output_type -> traveller.GetTotalUserResponse
+	1, // 3: traveller.StatisticService.GetTotalSolvedThread:output_type -> traveller.GetTotalSolvedThreadResponse
+	2, // [2:4] is the sub-list for method output_type
+	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -136,6 +197,18 @@ func file_statistic_proto_init() {
 				return nil
 			}
 		}
+		file_statistic_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetTotalSolvedThreadResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -143,7 +216,7 @@ func file_statistic_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_statistic_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -170,6 +243,7 @@ const _ = grpc.SupportPackageIsVersion6
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type StatisticServiceClient interface {
 	GetTotalUser(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetTotalUserResponse, error)
+	GetTotalSolvedThread(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetTotalSolvedThreadResponse, error)
 }
 
 type statisticServiceClient struct {
@@ -189,9 +263,19 @@ func (c *statisticServiceClient) GetTotalUser(ctx context.Context, in *emptypb.E
 	return out, nil
 }
 
+func (c *statisticServiceClient) GetTotalSolvedThread(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetTotalSolvedThreadResponse, error) {
+	out := new(GetTotalSolvedThreadResponse)
+	err := c.cc.Invoke(ctx, "/traveller.StatisticService/GetTotalSolvedThread", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // StatisticServiceServer is the server API for StatisticService service.
 type StatisticServiceServer interface {
 	GetTotalUser(context.Context, *emptypb.Empty) (*GetTotalUserResponse, error)
+	GetTotalSolvedThread(context.Context, *emptypb.Empty) (*GetTotalSolvedThreadResponse, error)
 }
 
 // UnimplementedStatisticServiceServer can be embedded to have forward compatible implementations.
@@ -200,6 +284,9 @@ type UnimplementedStatisticServiceServer struct {
 
 func (*UnimplementedStatisticServiceServer) GetTotalUser(context.Context, *emptypb.Empty) (*GetTotalUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTotalUser not implemented")
+}
+func (*UnimplementedStatisticServiceServer) GetTotalSolvedThread(context.Context, *emptypb.Empty) (*GetTotalSolvedThreadResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTotalSolvedThread not implemented")
 }
 
 func RegisterStatisticServiceServer(s *grpc.Server, srv StatisticServiceServer) {
@@ -224,6 +311,24 @@ func _StatisticService_GetTotalUser_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _StatisticService_GetTotalSolvedThread_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StatisticServiceServer).GetTotalSolvedThread(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/traveller.StatisticService/GetTotalSolvedThread",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StatisticServiceServer).GetTotalSolvedThread(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _StatisticService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "traveller.StatisticService",
 	HandlerType: (*StatisticServiceServer)(nil),
@@ -231,6 +336,10 @@ var _StatisticService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetTotalUser",
 			Handler:    _StatisticService_GetTotalUser_Handler,
+		},
+		{
+			MethodName: "GetTotalSolvedThread",
+			Handler:    _StatisticService_GetTotalSolvedThread_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

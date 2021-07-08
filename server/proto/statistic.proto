@@ -7,6 +7,11 @@ message GetTotalUserResponse{
     int64 total_user=1;
 }
 
+message GetTotalSolvedThreadResponse{
+    int64 total_solved_thread=1;
+}
+
 service StatisticService{
     rpc GetTotalUser(google.protobuf.Empty) returns (GetTotalUserResponse){}
+    rpc GetTotalSolvedThread(google.protobuf.Empty) returns (GetTotalSolvedThreadResponse){}
 }
