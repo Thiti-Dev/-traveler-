@@ -40,7 +40,7 @@ func (server *StatisticServer) GetTotalUser(ctx context.Context, req *emptypb.Em
 func (server *StatisticServer) GetTotalSolvedThread(ctx context.Context, req *emptypb.Empty) (*pb.GetTotalSolvedThreadResponse, error) {
 
 	dbInstance:= database.GetEstablishedPostgresConnection()
-	solved_thread_count ,err := dbInstance.Model((*db_model.ProofThread)(nil)).Where("is_solved = ?", true).Count() //TODO find out what ()() actually means
+	solved_thread_count ,err := dbInstance.Model((*db_model.ProofThread)(nil)).Where("is_solved = ?", true).Count()
 	if err != nil{
 		return nil, status.Errorf(
 			codes.Internal,
@@ -56,7 +56,7 @@ func (server *StatisticServer) GetTotalSolvedThread(ctx context.Context, req *em
 func (server *StatisticServer) GetTotalTraveler(ctx context.Context, req *emptypb.Empty) (*pb.GetTotalTravelerResponse, error) {
 
 	dbInstance:= database.GetEstablishedPostgresConnection()
-	solved_thread_count ,err := dbInstance.Model((*db_model.ProofThread)(nil)).Where("is_solved = ?", true).DistinctOn("solver_id").Count() //TODO find out what ()() actually means
+	solved_thread_count ,err := dbInstance.Model((*db_model.ProofThread)(nil)).Where("is_solved = ?", true).DistinctOn("solver_id").Count()
 	if err != nil{
 		return nil, status.Errorf(
 			codes.Internal,
@@ -66,5 +66,102 @@ func (server *StatisticServer) GetTotalTraveler(ctx context.Context, req *emptyp
 
 	return &pb.GetTotalTravelerResponse{
 		TotalTravler: int64(solved_thread_count),
+	},nil
+}
+
+func (server *StatisticServer) GetUserStatistic(ctx context.Context, req *pb.GetUserStatisticRequest) (*pb.GetUserStatisticResponse, error){
+	userId := req.GetUserId()
+	dbInstance:= database.GetEstablishedPostgresConnection()
+	/*
+	threadCreatedCount ,err := dbInstance.Model((*db_model.ProofThread)(nil)).Where("creator_id = ?", userId).Count() 
+	if err != nil{
+		return nil, status.Errorf(
+			codes.Internal,
+			"Cannot get the count of the total user created thread",
+		)
+	}
+
+	threadCrackedCount ,err := dbInstance.Model((*db_model.ProofThread)(nil)).Where("solver_id = ?", userId).Count() 
+	if err != nil{
+		return nil, status.Errorf(
+			codes.Internal,
+			"Cannot get the count of the total thread cracked by user",
+		)
+	}
+	*/
+
+	// ─── parallel ────────────────────────────────────────────────────────────────────
+
+	type PResult = struct{
+		value int64
+		err error
+	}
+
+
+
+	getCreatedThreadCount:= func() <- chan *PResult{
+		r := make(chan *PResult)
+		
+		go func(){
+			defer close(r)
+			threadCreatedCount ,err := dbInstance.Model((*db_model.ProofThread)(nil)).Where("creator_id = ?", userId).Count() 
+			if err != nil{
+				r <- &PResult{
+					err: status.Errorf(
+						codes.Internal,
+						"Cannot get the count of the total user created thread",
+					),
+				}
+			}
+			r <- &PResult{
+				value: int64(threadCreatedCount),
+				err: nil,
+			}
+			
+		}()
+		return r
+	}
+
+	getCrackedThreadCount:= func() <- chan  *PResult{
+		r := make(chan  *PResult)
+		
+		go func(){
+			defer close(r)
+			threadCrackedCount ,err := dbInstance.Model((*db_model.ProofThread)(nil)).Where("solver_id = ?", userId).Count() 
+			if err != nil{
+				r <- &PResult{
+					err: status.Errorf(
+						codes.Internal,
+						"Cannot get the count of the total thread cracked by user",
+					),
+				}
+			}
+			r <- &PResult{
+				value: int64(threadCrackedCount),
+				err: nil,
+			}
+			
+		}()
+		return r
+	}
+
+	createdThreadCountCh, crackedThreadCountCh := getCreatedThreadCount(),getCrackedThreadCount()
+	threadCreatedCount,threadCrackedCount := <- createdThreadCountCh, <-crackedThreadCountCh
+
+	if threadCreatedCount.err != nil {
+		return nil , threadCreatedCount.err
+	}
+	if threadCrackedCount.err != nil {
+		return nil , threadCrackedCount.err
+	}
+
+	// ────────────────────────────────────────────────────────────────────────────────
+
+
+
+
+	return &pb.GetUserStatisticResponse{
+		ThreadCreated: threadCreatedCount.value,
+		ThreadCracked: threadCrackedCount.value,
 	},nil
 }
