@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/Thiti-Dev/traveller/database"
 	db_model "github.com/Thiti-Dev/traveller/database/models"
@@ -15,6 +16,7 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
+	ts "google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type UserServer struct{
@@ -38,6 +40,7 @@ func (server *UserServer) CreateUser(ctx context.Context, req *pb.CreateUserRequ
 	user := &db_model.User{
 		Username: username,
 		Password: hashed_str,
+		CreatedAt: time.Now(),
 	}
 
 	dbInstance := database.GetEstablishedPostgresConnection()
@@ -67,6 +70,7 @@ func (server *UserServer) CreateUser(ctx context.Context, req *pb.CreateUserRequ
 			Id: user.Id,
 			Username: user.Username,
 			Password: user.Password,
+			CreatedAt: ts.New(user.CreatedAt),
 		},
 	}
 
@@ -99,6 +103,7 @@ func (server *UserServer) GetAllUser(ctx context.Context, req *emptypb.Empty) (*
 			&pb.UserDetail{
 				Id: user.Id,
 				Username: user.Username,
+				CreatedAt: ts.New(user.CreatedAt),
 			},
 		)
 	}
@@ -130,6 +135,7 @@ func (server *UserServer) GetUser(ctx context.Context, req *pb.GetUserRequest) (
 		User: &pb.UserDetail{
 			Id: user.Id,
 			Username: user.Username,
+			CreatedAt: ts.New(user.CreatedAt),
 		},
 	},nil
 }

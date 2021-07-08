@@ -1,11 +1,16 @@
 package models
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
+
 
 type User struct {
 	Id       int64
 	Username string
 	Password string
+	CreatedAt time.Time
 }
 
 func (u *User) String() string {

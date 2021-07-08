@@ -1,4 +1,5 @@
 syntax = "proto3";
+import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 package traveller;
 
@@ -9,6 +10,7 @@ message User {
     int64 id = 1;
     string username = 2;
     string password = 3;
+    google.protobuf.Timestamp created_at=4;
 }
 
 message CreateUserRequest{
@@ -23,6 +25,7 @@ message CreateUserResponse{
 message UserDetail {
     int64 id = 1;
     string username = 2;
+    google.protobuf.Timestamp created_at=3;
 }
 
 message GetAllUserResponse{
