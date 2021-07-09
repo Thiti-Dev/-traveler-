@@ -1,0 +1,6 @@
+<mat-toolbar>
+  <span>Traveler.io</span>
+  <div *ngIf="this.isAuthenticated()" class="right-auth-info">
+    <h2>You logged in as {{  this.getUserAliasName() }}</h2>
+  </div>
+</mat-toolbar>
