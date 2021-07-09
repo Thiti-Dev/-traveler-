@@ -50,6 +50,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 // ─── NG STYLE ───────────────────────────────────────────────────────────────────
 //
 import { CommonModule } from '@angular/common';
+import { HeaderComponent } from './header/header.component';
 // ────────────────────────────────────────────────────────────────────────────────
 
 @NgModule({
@@ -58,6 +59,7 @@ import { CommonModule } from '@angular/common';
     LandingComponent,
     AuthorizationComponent,
     ProofThreadComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,
