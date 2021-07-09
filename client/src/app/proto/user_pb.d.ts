@@ -2,6 +2,7 @@
 // file: user.proto
 
 import * as jspb from "google-protobuf";
+import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
 import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
 
 export class User extends jspb.Message {
@@ -13,6 +14,11 @@ export class User extends jspb.Message {
 
   getPassword(): string;
   setPassword(value: string): void;
+
+  hasCreatedAt(): boolean;
+  clearCreatedAt(): void;
+  getCreatedAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
+  setCreatedAt(value?: google_protobuf_timestamp_pb.Timestamp): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): User.AsObject;
@@ -29,6 +35,7 @@ export namespace User {
     id: number,
     username: string,
     password: string,
+    createdAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
   }
 }
 
@@ -85,6 +92,11 @@ export class UserDetail extends jspb.Message {
   getUsername(): string;
   setUsername(value: string): void;
 
+  hasCreatedAt(): boolean;
+  clearCreatedAt(): void;
+  getCreatedAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
+  setCreatedAt(value?: google_protobuf_timestamp_pb.Timestamp): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UserDetail.AsObject;
   static toObject(includeInstance: boolean, msg: UserDetail): UserDetail.AsObject;
@@ -99,6 +111,7 @@ export namespace UserDetail {
   export type AsObject = {
     id: number,
     username: string,
+    createdAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
   }
 }
 

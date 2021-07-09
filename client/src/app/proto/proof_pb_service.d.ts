@@ -32,11 +32,21 @@ type ProofServiceRemoveProofThread = {
   readonly responseType: typeof proof_pb.RemoveProofThreadResponse;
 };
 
+type ProofServiceProofing = {
+  readonly methodName: string;
+  readonly service: typeof ProofService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof proof_pb.ProofingRequest;
+  readonly responseType: typeof proof_pb.ProofingResponse;
+};
+
 export class ProofService {
   static readonly serviceName: string;
   static readonly CreateProofThread: ProofServiceCreateProofThread;
   static readonly GetAllProofThread: ProofServiceGetAllProofThread;
   static readonly RemoveProofThread: ProofServiceRemoveProofThread;
+  static readonly Proofing: ProofServiceProofing;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -97,6 +107,15 @@ export class ProofServiceClient {
   removeProofThread(
     requestMessage: proof_pb.RemoveProofThreadRequest,
     callback: (error: ServiceError|null, responseMessage: proof_pb.RemoveProofThreadResponse|null) => void
+  ): UnaryResponse;
+  proofing(
+    requestMessage: proof_pb.ProofingRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: proof_pb.ProofingResponse|null) => void
+  ): UnaryResponse;
+  proofing(
+    requestMessage: proof_pb.ProofingRequest,
+    callback: (error: ServiceError|null, responseMessage: proof_pb.ProofingResponse|null) => void
   ): UnaryResponse;
 }
 

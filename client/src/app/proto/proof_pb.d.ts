@@ -182,3 +182,55 @@ export namespace RemoveProofThreadResponse {
   }
 }
 
+export class ProofingRequest extends jspb.Message {
+  getThreadId(): number;
+  setThreadId(value: number): void;
+
+  getSecretCode(): string;
+  setSecretCode(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ProofingRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: ProofingRequest): ProofingRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ProofingRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ProofingRequest;
+  static deserializeBinaryFromReader(message: ProofingRequest, reader: jspb.BinaryReader): ProofingRequest;
+}
+
+export namespace ProofingRequest {
+  export type AsObject = {
+    threadId: number,
+    secretCode: string,
+  }
+}
+
+export class ProofingResponse extends jspb.Message {
+  hasResultMsg(): boolean;
+  clearResultMsg(): void;
+  getResultMsg(): common_message_pb.ResultMsg | undefined;
+  setResultMsg(value?: common_message_pb.ResultMsg): void;
+
+  hasUpdatedThread(): boolean;
+  clearUpdatedThread(): void;
+  getUpdatedThread(): ProofThread | undefined;
+  setUpdatedThread(value?: ProofThread): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ProofingResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: ProofingResponse): ProofingResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ProofingResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ProofingResponse;
+  static deserializeBinaryFromReader(message: ProofingResponse, reader: jspb.BinaryReader): ProofingResponse;
+}
+
+export namespace ProofingResponse {
+  export type AsObject = {
+    resultMsg?: common_message_pb.ResultMsg.AsObject,
+    updatedThread?: ProofThread.AsObject,
+  }
+}
+
