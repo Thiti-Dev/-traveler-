@@ -5,6 +5,7 @@ import * as jspb from "google-protobuf";
 import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
 import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
 import * as common_message_pb from "./common_message_pb";
+import * as user_pb from "./user_pb";
 
 export class ProofThread extends jspb.Message {
   getId(): number;
@@ -46,6 +47,11 @@ export class ProofThread extends jspb.Message {
   getSolvedAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
   setSolvedAt(value?: google_protobuf_timestamp_pb.Timestamp): void;
 
+  hasCreatorData(): boolean;
+  clearCreatorData(): void;
+  getCreatorData(): user_pb.UserDetail | undefined;
+  setCreatorData(value?: user_pb.UserDetail): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ProofThread.AsObject;
   static toObject(includeInstance: boolean, msg: ProofThread): ProofThread.AsObject;
@@ -69,6 +75,7 @@ export namespace ProofThread {
     solverId: number,
     solverAka: string,
     solvedAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+    creatorData?: user_pb.UserDetail.AsObject,
   }
 }
 
