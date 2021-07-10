@@ -85,7 +85,7 @@ func (server *ProofServer) CreateProofThread(ctx context.Context, req *pb.Create
 func (server *ProofServer) GetAllProofThread(ctx context.Context, req *emptypb.Empty) (*pb.GetAllProofThreadResponse, error){
 	dbInstance := database.GetEstablishedPostgresConnection()
 	var proofThreads []db_model.ProofThread
-	err := dbInstance.Model(&proofThreads).Select()
+	err := dbInstance.Model(&proofThreads).Relation("CreatorData").Select()
 	if err !=nil{
 		log.Fatalf("problem fetching all user:%v",err)
 	}
@@ -104,6 +104,11 @@ func (server *ProofServer) GetAllProofThread(ctx context.Context, req *emptypb.E
 			SolverId: thread.SolverId,
 			SolverAka: thread.SolverAka,
 			SolvedAt: ts.New(thread.SolvedAt),
+			CreatorData: &pb.UserDetail{
+				Id: thread.CreatorData.Id,
+				Username: thread.CreatorData.Username,
+				CreatedAt: ts.New(thread.CreatorData.CreatedAt),
+			},
 		})
 	}
 
