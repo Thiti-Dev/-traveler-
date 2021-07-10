@@ -8,6 +8,7 @@ import (
 type ProofThread struct {
 	Id       								int64
 	CreatorId 								int64
+	CreatorData								*User `pg:"rel:has-one,fk:creator_id,join_fk:id"`
 	ContentMsg 								string
 	SecretCode								string
 	CreatedAt								time.Time
