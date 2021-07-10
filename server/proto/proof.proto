@@ -2,6 +2,7 @@ syntax = "proto3";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 import "common_message.proto";
+import "user.proto";
 package traveller;
 
 option go_package="./;pb";
@@ -18,6 +19,7 @@ message ProofThread{
     int64 solver_id=9;
     string solver_aka=10;
     google.protobuf.Timestamp solved_at=11;
+    UserDetail creator_data=12;
 }
 
 message CreateProofThreadRequest{
