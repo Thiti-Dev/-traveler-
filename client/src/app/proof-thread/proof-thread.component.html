@@ -43,9 +43,9 @@
           <div class="card-text">
             <div class="portada"></div>
             <div class="title-total">
-              <div class="title">Traveler-xxx01</div>
-              <h2>aaw0kenn</h2>
-              <div class="desc">I was wondering if there really is a time-traveler</div>
+              <div class="title">Traveler-{{ thread.creatorId }}</div>
+              <h2>{{ thread.creatorData?.username }}</h2>
+              <div class="desc">{{ thread.contentMsg }}</div>
             </div>
           </div>
         </div>
@@ -53,10 +53,11 @@
       <div *ngIf="focused_panel === thread.id" fxFlex="60" fxFlex.lt-md="100" fxLayoutAlign="space-around" style="background-color: red;">
         <mat-card class="proof-card">
           <mat-card-title>Proof table</mat-card-title>
-          <mat-card-subtitle style="margin-top: 15px;">-> 7 days left until the code reveal</mat-card-subtitle>
+          <mat-card-subtitle *ngIf="!isRevealPeriod(thread)" style="margin-top: 15px;">-> {{ getRemainingDay(thread) }} days left until the code reveal</mat-card-subtitle>
+          <mat-card-subtitle *ngIf="isRevealPeriod(thread)" style="margin-top: 15px;">-> the code is {{ thread.secretCode }}</mat-card-subtitle>
           <mat-card-content>
-
-            <mat-form-field  style="width: 100%;" appearance="fill">
+            <p *ngIf="thread.isSolved">---> cracked at: {{ getDateStringFromSeconds(thread.solvedAt!.seconds) }}</p>
+            <mat-form-field *ngIf="!thread.isSolved"  style="width: 100%;" appearance="fill">
               <mat-label>SecretCode</mat-label>
               <input matInput [formControl]="enteredProofCode" placeholder="Ex. the code that gon be revealed in the future" autocomplete="off">
               <mat-error *ngIf="enteredProofCode.hasError('required')">
@@ -66,7 +67,8 @@
 
           </mat-card-content>
           <mat-card-footer>
-            <button type="submit" mat-raised-button color="primary" style="width: 100%;font-family: 'Zen Tokyo Zoo', cursive;font-size: 20px;">Proof-now</button>
+            <button *ngIf="!thread.isSolved" (click)="this.proofThread()" type="submit" mat-raised-button color="primary" style="width: 100%;font-family: 'Zen Tokyo Zoo', cursive;font-size: 20px;">Proof-now</button>
+            <button *ngIf="thread.isSolved" disabled mat-raised-button color="primary" style="width: 100%;font-family: 'Zen Tokyo Zoo', cursive;font-size: 20px;">Cracked by {{ thread.solverAka }}</button>
           </mat-card-footer>
         </mat-card>
       </div>
