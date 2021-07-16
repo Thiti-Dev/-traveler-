@@ -1,0 +1,14 @@
+h2 {
+  font-family: 'Zen Tokyo Zoo', cursive;
+}
+
+span {
+  font-family: 'Zen Tokyo Zoo', cursive;
+}
+
+.right-auth-info {
+  position: absolute;
+  right: 3%;
+  text-align: right;
+}
+/*# sourceMappingURL=header.component.css.map */

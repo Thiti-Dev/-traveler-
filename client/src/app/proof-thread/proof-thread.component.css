@@ -1,0 +1,136 @@
+@import url("https://fonts.googleapis.com/css2?family=Zen+Tokyo+Zoo&display=swap");
+.card {
+  background: #fff;
+  border-radius: 4px;
+  -webkit-box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.5);
+          box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.5);
+  width: 600px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  border-radius: 25px;
+  position: relative;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.card h2 {
+  margin: 0;
+  padding: 0 1rem;
+}
+
+.card .title {
+  padding: 1rem;
+  text-align: right;
+  color: green;
+  font-weight: bold;
+  font-size: 18px;
+  font-family: 'Zen Tokyo Zoo', cursive;
+}
+
+.card .desc {
+  padding: 0.5rem 1rem;
+  font-size: 18px;
+  min-width: 200px;
+  font-family: 'Zen Tokyo Zoo', cursive;
+  font-weight: 800;
+}
+
+.card .actions {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[3];
+      grid-template-columns: repeat(3, 1fr);
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0.5rem 1rem;
+}
+
+.card svg {
+  width: 85px;
+  height: 85px;
+  margin: 0 auto;
+}
+
+.card h2 {
+  font-family: 'Zen Tokyo Zoo', cursive;
+  font-weight: bold;
+  color: #16a085;
+}
+
+.img-avatar {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  border-radius: 50%;
+  border: 6px solid white;
+  background-image: linear-gradient(-60deg, #16a085 0%, #f4d03f 100%);
+  top: 15px;
+  left: 85px;
+}
+
+.card-text {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 2fr;
+      grid-template-columns: 1fr 2fr;
+}
+
+.title-total {
+  padding: 2.5em 1.5em 1.5em 1.5em;
+}
+
+path {
+  fill: white;
+}
+
+.img-portada {
+  width: 100%;
+}
+
+.portada {
+  width: 100%;
+  height: 100%;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  background: dimgray;
+  background-position: bottom center;
+  background-size: cover;
+}
+
+.thread-element {
+  width: 100%;
+  height: 300px;
+  background: firebrick;
+}
+
+.proof-card {
+  width: 60%;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  font-family: 'Zen Tokyo Zoo', cursive;
+}
+
+.more-icon {
+  position: absolute;
+  right: 8%;
+  color: brown;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.more-icon:hover {
+  color: darkblue;
+}
+/*# sourceMappingURL=proof-thread.component.css.map */
